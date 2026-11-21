@@ -1,15 +1,32 @@
 // TODO(P502) : Étape 5.
 // Page d'accueil : présentation et les derniers articles.
+import{useState} from "react";
 import ArticleCard from "../components/ArticleCard";
-import {articleDeTest}from "../donnees-test.js"
+import {articlesDeTest}from "../donnees-test.js"
+
+
 export default function Accueil() {
+  const [favorisIds, setFavorisIds] = useState ([]);
+
+  function  basculerFavori (id){
+    if (favorisIds.includes(id)){
+      setFavorisIds(favorisIds.filter((itemId) => itemId !== id));
+    }else{
+      setFavorisIds([...favorisIds, id]);
+    }
+  } 
+
   return ( 
     <section>
-      <h2>Derniers articles</h2>
-      <ArticleCard article={articleDeTest[0]}/>
-      <ArticleCard article={articleDeTest[1]}/>
-      <ArticleCard article={articleDeTest[2]}/>
-
+      <p>Favoris : {favorisIds.length}</p>
+      {articlesDeTest.map((article) => (
+        <ArticleCard
+        key={article.id}
+        article={article}
+        estFavori={favorisIds.includes(article.id)}
+        onBasculerFavori={()=> basculerFavori(article.id)}
+        />
+      ))}
     </section>
   )
   
